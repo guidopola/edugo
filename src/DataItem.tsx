@@ -1,50 +1,26 @@
-import React, { useState } from 'react'
-import { Button, Typography, Row, Col } from 'antd';
+import React from 'react'
+import { Button } from 'antd';
 
 
-
-import {observable} from 'mobx';
 import {observer} from 'mobx-react';
-import CustomerList, { CustomerItem } from './components/CustomerList';
-import {CustomerForm, CustomerFormValues} from './components/CustomerForm';
+import CustomerList from './components/CustomerList';
+import {CustomerForm} from './components/CustomerForm';
+import { CustomerStore } from './store/CustomerStore';
+import CustomerModel from './models/CustomerModel';
 
-
-export class AppState {
-    @observable timer = 0;
-
-    constructor() {
-        setInterval(() => {
-            this.timer += 1;
-        }, 1000);
-    }
-
-    resetTimer() {
-        this.timer = 0;
-    }
-}
-
-
-const data: CustomerItem[] = [{
-    key: 0,
-    name: 'Carlos',
-    lastName: 'Perez',
-    age: 37,
-    address: 'Calle 123',
-    country: 'Peronia',
-    email: 'carlos.perez@mail.com',
-}];
 
 interface IState {
     customerFormVisible: boolean
-    customerFormId: number
+    currentCustomer?: CustomerModel
 }
 
+
 @observer
-export default class DataItem extends React.Component<{appState: AppState}, IState> {
+export default class DataItem extends React.Component<{store: CustomerStore}, IState> {
     constructor(props: any) {
         super(props)
 
-        this.state = {customerFormVisible: false, customerFormId: -1};
+        this.state = {customerFormVisible: false, currentCustomer: undefined};
     }
     render() {
         return(
@@ -52,20 +28,19 @@ export default class DataItem extends React.Component<{appState: AppState}, ISta
                 <Button  type="primary" style={{ marginBottom: 16, marginTop: 16 }} onClick={() => {this.setState({customerFormVisible: true});}}>
                     Add Customer
                 </Button>
-                <CustomerForm visible={this.state.customerFormVisible} customerId={this.state.customerFormId} onCreate={() => {}} onCancel={() => {
-                    this.setState({customerFormVisible: false});
+                <CustomerForm visible={this.state.customerFormVisible} data={this.state.currentCustomer} onCreate={() => {}} onCancel={() => {
+                    this.setState({customerFormVisible: false, currentCustomer: undefined});
                 }}/>
-                <CustomerList onDelete={this.onDelete.bind(this)} onEdit={this.onEdit.bind(this)} data={data} />
+                <CustomerList onDelete={this.onDelete.bind(this)} onEdit={this.onEdit.bind(this)} data={this.props.store.customers} />
             </div>
         );
     }
 
-    onDelete = (id : number) => {
+    onDelete = (id : string) => {
         console.log(id);
     }
 
-    onEdit = (id : number) => {
-        console.log("onEdit", id);
-        this.setState({customerFormVisible: true, customerFormId: id});
+    onEdit = (key : string) => {
+        this.setState({customerFormVisible: true, currentCustomer: this.props.store.findCustomer(key)});
     }
 }

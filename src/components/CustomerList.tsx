@@ -4,7 +4,7 @@ import { ColumnProps } from 'antd/lib/table';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 export interface CustomerItem {
-    key: number,
+    key: string,
     name: string,
     lastName: string,
     age: number,
@@ -15,8 +15,8 @@ export interface CustomerItem {
 
 interface CustomerListProps {
     data: any;
-    onEdit: (id: number) => void;
-    onDelete: (id: number) => void;
+    onEdit: (key: string) => void;
+    onDelete: (key: string) => void;
 }
 
 export default class CustomerList extends React.Component<CustomerListProps> {
