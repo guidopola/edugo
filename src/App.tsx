@@ -1,11 +1,16 @@
 import React from 'react';
-import Button from 'antd/es/button';
 import './App.css';
+
+import { AppState } from './DataItem';
+import DataItem from './DataItem'
+
+const appState = new AppState();
+
 
 function App() {
   return (
     <div className="App">
-      <Button type="primary">Button</Button>
+      <DataItem appState={appState} />
     </div>
   );
 }
