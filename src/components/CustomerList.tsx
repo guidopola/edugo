@@ -2,25 +2,22 @@ import { Table, Popconfirm, Button, Tooltip } from 'antd'
 import React from 'react';
 import { ColumnProps } from 'antd/lib/table';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { observer } from 'mobx-react';
+import { CustomerStore } from '../store/CustomerStore';
+import CustomerModel from '../models/CustomerModel';
+import { LocationFormat } from './CustomerForm';
 
-export interface CustomerItem {
-    key: string,
-    name: string,
-    lastName: string,
-    age: number,
-    address: string,
-    country: string,
-    email: string,
-}
 
 interface CustomerListProps {
-    data: any;
+    store: CustomerStore;
     onEdit: (key: string) => void;
     onDelete: (key: string) => void;
+    onRowSelection: (rows: any) => void;
 }
 
+@observer
 export default class CustomerList extends React.Component<CustomerListProps> {
-    columns: ColumnProps<CustomerItem>[] = [
+    columns: ColumnProps<CustomerModel>[] = [
         {
             title: 'Name',
             key: 'name',
@@ -29,7 +26,7 @@ export default class CustomerList extends React.Component<CustomerListProps> {
         {
             title: 'Last Name',
             key: 'lastname',
-            dataIndex: 'lastName'
+            dataIndex: 'lastname'
         },
         {
             title: 'Age',
@@ -42,9 +39,10 @@ export default class CustomerList extends React.Component<CustomerListProps> {
             dataIndex: 'address'
         },
         {
-            title: 'Country',
-            key: 'country',
-            dataIndex: 'country'
+            title: 'Location',
+            key: 'location',
+            dataIndex: 'location',
+            render: (text, record) => LocationFormat(record.location),
         },
         {
             title: 'Email Address',
@@ -69,9 +67,9 @@ export default class CustomerList extends React.Component<CustomerListProps> {
             },
         },
     ];
-
     render() {
-        return <Table dataSource={this.props.data} columns={this.columns} rowSelection={{type: 'checkbox'}} pagination={{position: ['bottomCenter']}} />;
+        return <Table rowSelection={{type: 'checkbox', onChange: (s) => this.props.onRowSelection(s)}} dataSource={this.props.store.customers} columns={this.columns} 
+            pagination={{position: ['bottomCenter'], showSizeChanger: true, pageSizeOptions: ['5', '10', '25'] }} />;
     }
 };
  

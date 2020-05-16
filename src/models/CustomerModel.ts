@@ -5,8 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 export class CustomerModel {
     readonly key: string;
     @observable public name: string;
-    @observable public lastName: string;
-    @observable public birthDate: moment.Moment;
+    @observable public lastname: string;
+    @observable public birthdate: moment.Moment;
     @observable public address: string;
     @observable public location: string[];
     @observable public email: string;
@@ -19,8 +19,8 @@ export class CustomerModel {
         email: string) {
         this.key = uuidv4();
         this.name = name;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
+        this.lastname = lastName;
+        this.birthdate = birthDate;
         this.address = address;
         this.location = location;
         this.email = email;
@@ -29,14 +29,8 @@ export class CustomerModel {
     @computed
     get age() {
         const now = moment();
-        const bd = this.birthDate;
+        const bd = this.birthdate;
         return now.diff(bd, 'y');
-    }
-
-
-    static key = 0;
-    static generateId() {
-        return this.key++;
     }
 }
 
