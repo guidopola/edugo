@@ -1,21 +1,24 @@
 import React from 'react'
 import { Button, Popconfirm, Tooltip } from 'antd';
-import CustomerList from './components/CustomerList';
-import {CustomerForm} from './components/CustomerForm';
-import { CustomerStore } from './store/CustomerStore';
-import CustomerModel from './models/CustomerModel';
+import CustomerList from './CustomerList';
+import {CustomerForm} from './CustomerForm';
+import { CustomerStore } from '../store/CustomerStore';
+import CustomerModel from '../models/CustomerModel';
 import { DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons';
 
 
-interface IState {
+interface CustomerViewState {
     customerFormVisible: boolean
     currentCustomer?: CustomerModel
     selectedCustomers: string[]
 }
 
+interface CustomerViewProps {
+    store: CustomerStore;
+}
 
 
-export default class DataItem extends React.Component<{store: CustomerStore}, IState> {
+export default class DataItem extends React.Component<CustomerViewProps, CustomerViewState> {
     constructor(props: any) {
         super(props)
 

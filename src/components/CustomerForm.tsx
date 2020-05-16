@@ -2,8 +2,6 @@ import React from 'react'
 import { Form, Modal, Input, DatePicker, Cascader } from 'antd';
 import { FormInstance } from 'antd/lib/form/Form';
 import CustomerModel from '../models/CustomerModel';
-import { observable } from 'mobx';
-import { observer } from 'mobx-react';
 
 const LocationData = [{
     value: 'ar',
@@ -76,12 +74,12 @@ const LocationData = [{
 ];
 
 export const LocationFormat = (value: string[]) => {
-    if (value.length != 3)
+    if (value.length !== 3)
         return "";
 
-    const country = LocationData.find(obj => obj.value == value[0]);
-    const state = country?.children.find(obj => obj.value == value[1]);
-    const city = state?.children.find(obj => obj.value == value[2]);
+    const country = LocationData.find(obj => obj.value === value[0]);
+    const state = country?.children.find(obj => obj.value === value[1]);
+    const city = state?.children.find(obj => obj.value === value[2]);
 
     return `${city?.label}, ${state?.label}, ${country?.label}`;
 

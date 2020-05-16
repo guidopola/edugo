@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 
-import DataItem from './DataItem'
+import CustomerView from './components/CustomerView'
 import { useCustomerStore } from './store/CustomerStore';
 import { CustomerModel } from './models/CustomerModel';
 import moment from 'moment';
@@ -10,7 +10,7 @@ function App() {
 
 
 
-  const customerStore = useCustomerStore([
+  const dummyData = useCustomerStore([
     new CustomerModel('Roze','Jeness',moment('1980-10-05'),'Sachs',['ar', 'sf', 'ros'],'rjeness0@boston.com'),
     new CustomerModel('Reid','McGarvie',moment('1951-10-29'),'Bashford',['ar', 'sf', 'ros'],'rmcgarvie1@sitemeter.com'),
     new CustomerModel('Thadeus','Guilford',moment('1951-09-03'),'Lighthouse Bay',['ar', 'sf', 'ros'],'tguilford2@timesonline.co.uk'),
@@ -44,7 +44,7 @@ function App() {
   ]);
   return (
     <div className="App">
-      <DataItem store={customerStore} />
+      <CustomerView store={dummyData} />
     </div>
   );
 }
