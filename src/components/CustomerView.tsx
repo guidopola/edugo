@@ -11,6 +11,7 @@ interface CustomerViewState {
     customerFormVisible: boolean
     currentCustomer?: CustomerModel
     selectedCustomers: string[]
+    disableDeleteButton: boolean
 }
 
 interface CustomerViewProps {
@@ -22,7 +23,7 @@ export default class DataItem extends React.Component<CustomerViewProps, Custome
     constructor(props: any) {
         super(props)
 
-        this.state = {customerFormVisible: false, currentCustomer: undefined, selectedCustomers: []};
+        this.state = {customerFormVisible: false, currentCustomer: undefined, selectedCustomers: [], disableDeleteButton: true};
     }
 
     render() {
@@ -30,7 +31,7 @@ export default class DataItem extends React.Component<CustomerViewProps, Custome
             <>
                 <Popconfirm title="Delete?" onConfirm={this.onDeleteSelected.bind(this)}>
                     <Tooltip title="Remove row">
-                        <Button  style={{ margin: 16 }} type="primary" icon={<DeleteOutlined />}>Delete selected</Button>
+                        <Button disabled={this.state.disableDeleteButton} style={{ margin: 16 }} type="primary" icon={<DeleteOutlined />}>Delete selected</Button>
                     </Tooltip>
                 </Popconfirm>                    
                 <Button  type="primary" style={{ margin: 16 }} icon={<PlusSquareOutlined />} onClick={() => {
@@ -57,7 +58,7 @@ export default class DataItem extends React.Component<CustomerViewProps, Custome
 
 
     onCustomerListSelectionChanged = (rows: string[]) => {
-        this.setState({selectedCustomers: rows});
+        this.setState({selectedCustomers: rows, disableDeleteButton: rows.length  == 0});
     }
 
     onDelete = (key : string) => {
